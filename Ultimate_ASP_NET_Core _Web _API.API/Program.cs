@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Ultimate_ASP_NET_Core__Web__API.API.Configurations;
+using Ultimate_ASP_NET_Core__Web__API.API.Contracts;
 using Ultimate_ASP_NET_Core__Web__API.API.Data;
+using Ultimate_ASP_NET_Core__Web__API.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(ICountriesRepository), typeof(CountriesRepository));
 
 var app = builder.Build();
 
